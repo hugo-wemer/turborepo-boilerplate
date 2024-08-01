@@ -10,13 +10,22 @@ type PermissionsByRole = (
 ) => void
 
 export const permissions: Record<Role, PermissionsByRole> = {
-  ADMIN(_, { can }) {
+  ADMIN(user, { can, cannot }) {
+    // o admin, por padrão, pode gerenciar tudo
     can('manage', 'all')
+    // mas não pode transferir/atualizar a organização (permissoes de negação n pode ter condicionais)
+    cannot(['transfer_ownership', 'update'], 'Organization')
+    // a n ser que ele seja o dono
+    can(['transfer_ownership', 'update'], 'Organization', {
+      owner_id: { $eq: user.id },
+    })
   },
   MEMBER(user, { can }) {
-    // can('invite', 'User')
+    can('get', 'User')
     can(['create', 'get'], 'Project')
-    can(['update', 'delete'], 'Project', { owner_id: { $eq: user.id } })
+    can(['update', 'delete'], 'Project', { ownerId: { $eq: user.id } })
   },
-  BILLING() {},
+  BILLING(_, { can }) {
+    can('manage', 'Billing')
+  },
 }
