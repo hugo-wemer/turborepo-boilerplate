@@ -6,10 +6,6 @@ Welcome to the SaaS Boilerplate repository! This boilerplate is designed to help
 
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Directory Structure](#directory-structure)
-- [Scripts](#scripts)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
